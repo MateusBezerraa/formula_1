@@ -4,7 +4,7 @@ import psycopg2.pool
 
 # --- IMPORTANTE: Configure suas credenciais do PostgreSQL aqui ---
 DB_CONFIG = {
-    "dbname": "ProjetoLabBD",
+    "dbname": "postgres",
     "user": "postgres",
     "password": "postgres",
     "host": "localhost",
@@ -115,7 +115,6 @@ def inserir_escuderia(constructor_ref, name, nationality, url):
         release_db_connection(conn)
 
 
-# <<< ADICIONE ESTA NOVA FUNÇÃO >>>
 def inserir_piloto(driver_ref, number, code, forename, surname, dob, nationality):
     """
     Insere um novo piloto. O ID é gerado automaticamente pelo banco.

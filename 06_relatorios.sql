@@ -26,10 +26,6 @@ CREATE INDEX IF NOT EXISTS idx_results_driver_points ON results (driverid);
 -- ========= FUNÇÕES DE RELATÓRIO =========
 
 -- Relatório 1 (Admin): Quantidade de resultados por status 
--- Justificativa da correção: O tipo de retorno da coluna "Quantidade" foi alterado
--- de BIGINT para INTEGER para corresponder exatamente ao tipo de dado da coluna
--- 'contagem' na tabela 'results_status', resolvendo o erro de incompatibilidade.
-
 CREATE OR REPLACE FUNCTION get_relatorio_admin_status()
 RETURNS TABLE("Status" TEXT, "Quantidade" INTEGER) AS $$
 BEGIN
