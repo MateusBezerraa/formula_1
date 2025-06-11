@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard Escuderia{% endblock %}
+{% block content %}
+    <h3>Dashboard da Escuderia: {{ display.nome_escuderia }}</h3>
+    <p>Pilotos na equipe: {{ display.qtd_pilotos }}</p>
+    <hr>
+
+    <h4>Resumo de Desempenho</h4>
+    {% if data and data.rows %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center p-3">
+                <h5>Vitórias Totais</h5>
+                <h2>{{ data.rows[0][0] }}</h2>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="card text-center p-3">
+                <h5>Primeiro Ano</h5>
+                <h2>{{ data.rows[0][2] }}</h2>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="card text-center p-3">
+                <h5>Último Ano</h5>
+                <h2>{{ data.rows[0][3] }}</h2>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <h4 class="mt-5">Relatórios Disponíveis</h4>
+    <div class="list-group">
+        <a href="{{ url_for('relatorio', nome_relatorio='escuderia_vitorias') }}" class="list-group-item list-group-item-action">
+            Relatório 4: Vitórias por Piloto da Escuderia
+        </a>
+        <a href="{{ url_for('relatorio', nome_relatorio='escuderia_status') }}" class="list-group-item list-group-item-action">
+            Relatório 5: Resultados por Status (Escuderia)
+        </a>
+    </div>
+{% endblock %}

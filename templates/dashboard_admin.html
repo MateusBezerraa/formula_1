@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard Admin{% endblock %}
+{% block content %}
+    <h3>Dashboard do Administrador</h3>
+    <hr>
+    
+    <h4>Resumo Geral</h4>
+    {% if counts and counts.rows %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center p-3">
+                <h5>Total de Pilotos</h5>
+                <h2>{{ counts.rows[0][0] }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center p-3">
+                <h5>Total de Escuderias</h5>
+                <h2>{{ counts.rows[0][1] }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center p-3">
+                <h5>Total de Temporadas</h5>
+                <h2>{{ counts.rows[0][2] }}</h2>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <h4 class="mt-5">Relatórios Disponíveis</h4>
+    <div class="list-group">
+        <a href="{{ url_for('relatorio', nome_relatorio='admin_status') }}" class="list-group-item list-group-item-action">
+            Relatório 1: Quantidade de Resultados por Status
+        </a>
+        </div>
+{% endblock %}
