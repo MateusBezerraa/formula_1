@@ -205,4 +205,3 @@ BEGIN
         GROUP BY s.statusid
         ORDER BY "Quantidade" DESC;
 END;
-$$ LANGUAGE plpgsql;

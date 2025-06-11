@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}Cadastrar Piloto{% endblock %}
+
+{% block content %}
+<h3>Cadastrar Novo Piloto</h3>
+<hr>
+
+<form method="post" class="mt-4">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="driver_ref" class="form-label">DriverRef</label>
+            <input type="text" class="form-control" id="driver_ref" name="driver_ref" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="number" class="form-label">Número</label>
+            <input type="number" class="form-control" id="number" name="number">
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="code" class="form-label">Código (3 letras)</label>
+            <input type="text" class="form-control" id="code" name="code" maxlength="3">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="forename" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="forename" name="forename" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="surname" class="form-label">Sobrenome</label>
+            <input type="text" class="form-control" id="surname" name="surname" required>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="dob" class="form-label">Data de Nascimento</label>
+            <input type="date" class="form-control" id="dob" name="dob" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="nationality" class="form-label">Nacionalidade</label>
+            <input type="text" class="form-control" id="nationality" name="nationality" required>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+</form>
+
+{% if mensagem %}
+    <div class="alert mt-4 {{ 'alert-success' if sucesso else 'alert-danger' }}" role="alert">
+        {{ mensagem }}
+    </div>
+{% endif %}
+
+{% endblock %}
