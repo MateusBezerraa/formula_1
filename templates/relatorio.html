@@ -6,6 +6,15 @@
         <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar ao Dashboard</a>
     </div>
     <hr>
+    {% if title == "Relatório de Resultados por Aeroportos" %}
+    <form method="post" class="mb-4 d-flex gap-2 align-items-end">
+        <div>
+            <label for="nome_cidade" class="form-label mb-0">Cidade</label>
+            <input type="text" class="form-control" id="nome_cidade" name="nome_cidade" value="{{ nome_cidade or '' }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">PROCURAR</button>
+    </form>
+    {% endif %}
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
@@ -28,7 +37,7 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="{{ data.headers|length }}">Nenhum dado encontrado.</td>
+                        <td colspan="{{ data.headers|length if data and data.headers else 1 }}">Nenhum dado encontrado.</td>
                     </tr>
                 {% endif %}
             </tbody>

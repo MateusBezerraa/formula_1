@@ -60,7 +60,7 @@ def dashboard():
     return redirect(url_for('login'))
 
 
-@app.route('/relatorio/<nome_relatorio>')
+@app.route('/relatorio/<nome_relatorio>',  methods=['GET', 'POST'])
 def relatorio(nome_relatorio):
     if 'user_info' not in session:
         return redirect(url_for('login'))
@@ -82,7 +82,13 @@ def relatorio(nome_relatorio):
         'piloto_pontos': ('get_relatorio_piloto_pontos', (user_id,), "Relatório de Pontos por Corrida"),
         'piloto_status': ('get_relatorio_piloto_status', (user_id,), "Relatório de Status do Piloto")
     }
-
+    if nome_relatorio == 'admin_aeroportos':
+        if request.method == 'POST':
+            nome_cidade = request.form['nome_cidade']
+            data = db.call_db_function('get_relatorio_admin_aeroportos', (nome_cidade,))
+            return render_template('relatorio.html', data=data, title="Relatório de Resultados por Aeroportos", nome_cidade=nome_cidade)
+        return render_template('relatorio.html', data=None, title="Relatório de Resultados por Aeroportos")
+    
     if nome_relatorio in report_map:
         func_name, args, title = report_map[nome_relatorio]
         data = db.call_db_function(func_name, args)
