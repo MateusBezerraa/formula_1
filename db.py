@@ -127,10 +127,7 @@ def inserir_piloto(driver_ref, number, code, forename, surname, dob, nationality
         with conn.cursor() as cur:
             # Note que não incluímos 'driverid' no INSERT.
             cur.execute(
-                """
-                INSERT INTO driver (driverref, number, code, forename, surname, dob, nationality) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """,
+                "INSERT INTO driver (driverref, number, code, forename, surname, dob, nationality) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (driver_ref, number_int, code, forename, surname, dob, nationality)
             )
             conn.commit()
