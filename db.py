@@ -54,8 +54,7 @@ def call_db_function(function_name, args=None):
 def verify_login(login, password):
     """
     Verifica as credenciais do usuário.
-    NOTA: O projeto pede autenticação SCRAM-SHA-256, que é gerenciada pelo
-    próprio PostgreSQL na conexão. Para a lógica da aplicação, verificamos
+    Para a lógica da aplicação, verificamos
     o login e a senha (que, no protótipo, estão em texto plano).
     """
     conn = get_db_connection()
@@ -93,3 +92,16 @@ def get_display_info(user_tipo, user_idoriginal):
     finally:
         release_db_connection(conn)
     return display
+
+def inserir_escuderia(constructor_ref, name, nationality, url):
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO constructors (constructorref, name, nationality, url) VALUES (%s, %s, %s, %s)",
+                    (constructor_ref, name, nationality, url))
+        conn.commit()
+        return True, "Escuderia cadastrada com sucesso."
+    except Exception as e:
+        return False, f"Erro ao cadastrar escuderia: {e}"
+
+

@@ -3,8 +3,8 @@
    e criando uma atmosfera mais imersiva, apropriada para um tema de tecnologia
    e automobilismo. A fonte sans-serif é moderna e legível. */
 body {
-    background-color: #1a1a1d; /* Um cinza bem escuro, quase preto */
-    color: #f8f9fa; /* Texto branco/cinza claro para contraste */
+    background-color: #1a1a1d; 
+    color: #f8f9fa; 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 

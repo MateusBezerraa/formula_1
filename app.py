@@ -88,6 +88,42 @@ def relatorio(nome_relatorio):
         
     return "Relatório não encontrado.", 404
 
+@app.route('/cadastrar_escuderia', methods=['GET', 'POST'])
+def cadastrar_escuderia():
+    if 'user_info' not in session or session['user_info']['tipo'] != 'Administrador':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        constructor_ref = request.form['constructor_ref']
+        name = request.form['name']
+        nationality = request.form['nationality']
+        url = request.form['url']
+
+        sucesso, mensagem = db.inserir_escuderia(constructor_ref, name, nationality, url)
+        return render_template('cadastrar_escuderia.html', sucesso=sucesso, mensagem=mensagem)
+
+    return render_template('cadastrar_escuderia.html')
+
+
+@app.route('/cadastrar_piloto', methods=['GET', 'POST'])
+def cadastrar_piloto():
+    if 'user_info' not in session or session['user_info']['tipo'] != 'Administrador':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        driver_ref = request.form['driver_ref']
+        number = request.form['number']
+        code = request.form['code']
+        forename = request.form['forename']
+        surname = request.form['surname']
+        dob = request.form['dob']
+        nationality = request.form['nationality']
+
+        sucesso, mensagem = db.inserir_piloto(driver_ref, number, code, forename, surname, dob, nationality)
+        return render_template('cadastrar_piloto.html', sucesso=sucesso, mensagem=mensagem)
+
+    return render_template('cadastrar_piloto.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Cadastrar Escuderia{% endblock %}
+
+{% block content %}
+<h3>Cadastrar Nova Escuderia</h3>
+<hr>
+
+<form method="post" class="mt-4">
+    <div class="mb-3">
+        <label for="constructor_ref" class="form-label">ConstructorRef</label>
+        <input type="text" class="form-control" id="constructor_ref" name="constructor_ref" required>
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="nationality" class="form-label">Nacionalidade</label>
+        <input type="text" class="form-control" id="nationality" name="nationality" required>
+    </div>
+    <div class="mb-3">
+        <label for="url" class="form-label">URL</label>
+        <input type="url" class="form-control" id="url" name="url" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+{% if mensagem %}
+    <div class="alert mt-4 {{ 'alert-success' if sucesso else 'alert-danger' }}" role="alert">
+       <div>
+{% endif %}
+{% endblock %}
