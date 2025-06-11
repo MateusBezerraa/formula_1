@@ -94,14 +94,51 @@ def get_display_info(user_tipo, user_idoriginal):
     return display
 
 def inserir_escuderia(constructor_ref, name, nationality, url):
+    """
+    Insere uma nova escuderia. O ID é gerado automaticamente pelo banco.
+    """
+    conn = get_db_connection()
     try:
-        conn = get_connection()
-        cur = conn.cursor()
-        cur.execute("INSERT INTO constructors (constructorref, name, nationality, url) VALUES (%s, %s, %s, %s)",
-                    (constructor_ref, name, nationality, url))
-        conn.commit()
+        with conn.cursor() as cur:
+            # Note que não incluímos 'constructorid' no INSERT. O DB cuida disso.
+            cur.execute(
+                "INSERT INTO constructors (constructorref, name, nationality, url) VALUES (%s, %s, %s, %s)",
+                (constructor_ref, name, nationality, url)
+            )
+            conn.commit()
         return True, "Escuderia cadastrada com sucesso."
     except Exception as e:
+        conn.rollback() # Desfaz a transação em caso de erro
+        print(f"Erro ao cadastrar escuderia: {e}")
         return False, f"Erro ao cadastrar escuderia: {e}"
+    finally:
+        release_db_connection(conn)
 
 
+# <<< ADICIONE ESTA NOVA FUNÇÃO >>>
+def inserir_piloto(driver_ref, number, code, forename, surname, dob, nationality):
+    """
+    Insere um novo piloto. O ID é gerado automaticamente pelo banco.
+    """
+    conn = get_db_connection()
+    try:
+        # Converte 'number' para inteiro, ou None se estiver vazio
+        number_int = int(number) if number else None
+        
+        with conn.cursor() as cur:
+            # Note que não incluímos 'driverid' no INSERT.
+            cur.execute(
+                """
+                INSERT INTO driver (driverref, number, code, forename, surname, dob, nationality) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """,
+                (driver_ref, number_int, code, forename, surname, dob, nationality)
+            )
+            conn.commit()
+        return True, "Piloto cadastrado com sucesso."
+    except Exception as e:
+        conn.rollback() # Desfaz a transação em caso de erro
+        print(f"Erro ao cadastrar piloto: {e}")
+        return False, f"Erro ao cadastrar piloto: {e}"
+    finally:
+        release_db_connection(conn)

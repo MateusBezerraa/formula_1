@@ -33,10 +33,12 @@ Este projeto consiste no desenvolvimento de um protótipo de ferramenta com inte
 |-- /static                             # Arquivos estáticos (CSS)
 |
 |-- 01_schema_usuarios.sql
-|-- 02_gerenciamento_usuarios.sql
-|-- 03_dashboards.sql
-|-- 04_relatorios.sql
-|-- 05_acoes_usuarios.sql
+|-- 02_automatic_id.sql
+|-- 03_gerenciamento_usuarios.sql
+|-- 04_admin_create.sql
+|-- 05_dashboards.sql
+|-- 06_relatorios.sql
+|-- 07_acoes_usuarios.sql
 |
 |-- app.py                              # Aplicação principal Flask
 |-- db.py                               # Módulo de conexão com o banco
@@ -71,12 +73,15 @@ Siga estes passos para configurar e rodar o projeto localmente.
 3.  **Execute os Scripts SQL do Projeto:**
     * No pgAdmin, abra uma "Query Tool" para o banco `f1_projeto`.
     * Execute os arquivos `.sql` fornecidos **na seguinte ordem**:
-        1.  `01_schema_usuarios.sql`
-        2.  `02_gerenciamento_usuarios.sql`
-        3.  `03_dashboards.sql`
-        4.  `04_relatorios.sql`
-        5.  `05_acoes_usuarios.sql`
-    * **Importante:** Para os scripts que criam funções (03, 04, 05), execute cada bloco `CREATE FUNCTION` individualmente, selecionando todo o texto da função antes de clicar em "Executar", para evitar erros de sintaxe.
+        1.  `01_schema_usuarios.sql`            (Cria as tabelas de usuários)
+        2.  `02_automatic_id.sql`               (Altera as tabelas para que os IDs sejam automáticos)
+        3.  `03_gerenciamento_usuarios.sql`     (Popula a tabela de usuários e cria gatilhos)
+        4.  `04_admin_create.sql`               (Cria o usuário administrador)
+        5.  `05_dashboards.sql`                 (Cria as funções do dashboard)
+        6.  `06_relatorios.sql`                 (Cria as funções dos relatórios)
+        7.  `07_acoes_usuarios.sql`             (Cria as funções para as ações dos usuários)
+
+    **Importante:** Para os scripts que criam funções (03, 04, 05), execute cada bloco `CREATE FUNCTION` individualmente, selecionando todo o texto da função antes de clicar em "Executar", para evitar erros de sintaxe.
 
 ### Fase 2: Configuração do Ambiente Python
 
