@@ -89,7 +89,7 @@ Siga estes passos para configurar e rodar o projeto localmente.
     python -m venv venv
 
     # Ativar no Windows (cmd ou PowerShell)
-    venv\Scripts\activate
+    venv\Scripts\activate.bat
 
     # Ativar no macOS/Linux
     source venv/bin/activate.bat
