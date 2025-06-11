@@ -73,6 +73,74 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Relatório 3 (Admin): Quantidade de resultados por ano
+CREATE OR REPLACE FUNCTION get_relatorio_desempenho_circuitos()
+RETURNS TABLE(
+    "Nível" INT,
+    "Descrição" TEXT,
+    "Valor" TEXT
+) AS $$
+DECLARE
+    total_corridas BIGINT;
+    rec_circuito RECORD;
+    rec_corrida RECORD;
+    rec_detalhes_corrida RECORD;
+BEGIN
+    -- Nível 1: Quantidade de corridas cadastradas no total
+    SELECT COUNT(*) INTO total_corridas FROM races;
+    "Nível" := 1;
+    "Descrição" := 'Quantidade total de corridas';
+    "Valor" := total_corridas::TEXT;
+    RETURN NEXT;
+
+    -- Nível 2: Quantidade de corridas por circuito, com stats de voltas
+    FOR rec_circuito IN
+        SELECT
+            c.circuitid,
+            c.name AS nome_circuito,
+            (SELECT COUNT(*) FROM races r WHERE r.circuitid = c.circuitid) AS qtde_corridas,
+            (SELECT MIN(res.laps) FROM results res JOIN races r ON res.raceid = r.raceid WHERE r.circuitid = c.circuitid AND res.laps > 0) AS min_voltas,
+            (SELECT ROUND(AVG(res.laps)) FROM results res JOIN races r ON res.raceid = r.raceid WHERE r.circuitid = c.circuitid AND res.laps > 0) AS media_voltas,
+            (SELECT MAX(res.laps) FROM results res JOIN races r ON res.raceid = r.raceid WHERE r.circuitid = c.circuitid) AS max_voltas
+        FROM circuits c
+        WHERE EXISTS (SELECT 1 FROM races r WHERE r.circuitid = c.circuitid)
+        ORDER BY c.name
+    LOOP
+        "Nível" := 2;
+        "Descrição" := 'Circuito: ' || rec_circuito.nome_circuito;
+        "Valor" := 'Corridas: ' || rec_circuito.qtde_corridas ||
+                   ' | Voltas (Min/Média/Máx): ' || COALESCE(rec_circuito.min_voltas::TEXT, 'N/A') ||
+                   '/' || COALESCE(rec_circuito.media_voltas::TEXT, 'N/A') ||
+                   '/' || COALESCE(rec_circuito.max_voltas::TEXT, 'N/A');
+        RETURN NEXT;
+
+        -- Nível 3: Para cada corrida, indica a quantidade de voltas e tempo total
+        FOR rec_corrida IN
+            SELECT r.raceid, r.name AS nome_corrida, r.year AS ano_corrida
+            FROM races r
+            WHERE r.circuitid = rec_circuito.circuitid
+            ORDER BY r.year, r.name
+        LOOP
+            -- Busca os detalhes da corrida (voltas e tempo do vencedor)
+            SELECT
+                MAX(res.laps) AS voltas_da_corrida,
+                res.time AS tempo_total
+            INTO rec_detalhes_corrida
+            FROM results res
+            WHERE res.raceid = rec_corrida.raceid
+              AND res.position = 1 -- Considera o tempo do vencedor (posição 1)
+            GROUP BY res.time;
+
+            "Nível" := 3;
+            "Descrição" := ' -> Corrida: ' || rec_corrida.nome_corrida || ' (' || rec_corrida.ano_corrida || ')';
+            "Valor" := 'Voltas: ' || COALESCE(rec_detalhes_corrida.voltas_da_corrida::TEXT, 'N/A') ||
+                       ' | Tempo Total: ' || COALESCE(rec_detalhes_corrida.tempo_total, 'N/A');
+            RETURN NEXT;
+
+        END LOOP;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
 
 -- Relatório 4 (Escuderia): Vitórias por piloto da escuderia 
 CREATE OR REPLACE FUNCTION get_relatorio_escuderia_vitorias(p_constructor_id INT)

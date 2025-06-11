@@ -73,6 +73,8 @@ def relatorio(nome_relatorio):
     report_map = {
         # Admin
         'admin_status': ('get_relatorio_admin_status', None, "Relatório de Resultados por Status"),
+        'admin_aeroportos': ('get_relatorio_admin_aeroportos', None, "Relatório de Resultados por Aeroportos"),
+        'desempenho_circuitos': ('get_relatorio_desempenho_circuitos', None, "Relatório de Desempenho por Circuitos"),
         # Escuderia
         'escuderia_vitorias': ('get_relatorio_escuderia_vitorias', (user_id,), "Relatório de Vitórias por Piloto"),
         'escuderia_status': ('get_relatorio_escuderia_status', (user_id,), "Relatório de Status da Escuderia"),
